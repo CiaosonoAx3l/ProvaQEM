@@ -1,1 +1,29 @@
-<p>post-list works!</p>
+<div class="board-container">
+  <header>
+    <h2>Bacheca</h2>
+    <div class="actions">
+      <button routerLink="/create" class="btn-primary">Nuovo Post</button>
+      <button (click)="logout(  )" class="btn-secondary">Esci</button>
+    </div>
+  </header>
+
+  <!-- Lista dei Post usando $index come track -->
+  @for (post of posts; track $index) {
+    <div class="post-card">
+      <div class="post-header">
+        <strong>@{{ post.authorUsername }}</strong>
+        <span>{{ post.createdAt }}</span>
+      </div>
+      <p class="post-content">{{ post.content }}</p>
+    </div>
+  } @empty {
+    <p>Nessun post presente in bacheca.</p>
+  }
+
+  <!-- Controlli di Paginazione -->
+  <div class="pagination">
+    <button (click)="loadPosts(currentPage - 1)" [disabled]="currentPage === 0">Precedente</button>
+    <span>Pagina {{ currentPage + 1 }} di {{ totalPages || 1 }}</span>
+    <button (click)="loadPosts(currentPage + 1)" [disabled]="currentPage >= totalPages - 1">Successiva</button>
+  </div>
+</div>

@@ -8,8 +8,10 @@ import { BehaviorSubject, tap } from 'rxjs';
 export class AuthService {
   private baseUrl = 'http://localhost:8080/api/auth';
   
-  // Usiamo un BehaviorSubject per tenere traccia se l'utente è loggato
-  private loggedIn = new BehaviorSubject<boolean>(false);
+  // Inizializza lo stato leggendo il localStorage
+  private loggedIn = new BehaviorSubject<boolean>(
+    localStorage.getItem('isLoggedIn') === 'true'
+  );
   isLoggedIn$ = this.loggedIn.asObservable();
 
   constructor(private http: HttpClient) {}
@@ -21,9 +23,12 @@ export class AuthService {
   login(credentials: any) {
     return this.http.post(`${this.baseUrl}/login`, credentials, { 
       responseType: 'text',
-      withCredentials: true // FONDAMENTALE PER IL COOKIE!
+      withCredentials: true 
     }).pipe(
-      tap(() => this.loggedIn.next(true))
+      tap(() => {
+        localStorage.setItem('isLoggedIn', 'true');
+        this.loggedIn.next(true);
+      })
     );
   }
 
@@ -32,7 +37,10 @@ export class AuthService {
       responseType: 'text',
       withCredentials: true 
     }).pipe(
-      tap(() => this.loggedIn.next(false))
+      tap(() => {
+        localStorage.removeItem('isLoggedIn');
+        this.loggedIn.next(false);
+      })
     );
   }
 }

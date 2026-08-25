@@ -1,1 +1,35 @@
-<p>post-create works!</p>
+<div class="create-container">
+  <header>
+    <h2>Crea un nuovo Post</h2>
+    <!-- Link per annullare e tornare indietro -->
+    <a routerLink="/posts" class="back-link">Torna alla bacheca</a>
+  </header>
+
+  <div class="form-group">
+    <!-- La direttiva ngModel lega il testo alla variabile 'content' -->
+    <textarea
+      [(ngModel)]="content"
+      placeholder="A cosa stai pensando?"
+      rows="5"
+      [maxlength]="maxLength"
+    ></textarea>
+    
+    <!-- Contatore visibile -->
+    <div class="counter" [class.text-danger]="charsLeft <= 10">
+      {{ content.length }} / {{ maxLength }}
+    </div>
+  </div>
+
+  <!-- Gestione feedback di errore -->
+  <div *ngIf="errorMessage" class="error-msg">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Pulsante Pubblica: disabilitato se invalido o in fase di caricamento -->
+  <button 
+    (click)="submitPost()" 
+    [disabled]="isInvalid || isSubmitting" 
+    class="btn-primary">
+    {{ isSubmitting ? 'Pubblicazione in corso...' : 'Pubblica' }}
+  </button>
+</div>
