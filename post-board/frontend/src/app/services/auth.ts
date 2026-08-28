@@ -20,6 +20,12 @@ export class AuthService {
     return this.loggedIn.value;
   }
 
+  register(userData: any) {
+    return this.http.post(`${this.baseUrl}/register`, userData, { 
+      responseType: 'text'
+    });
+  }
+
   login(credentials: any) {
     return this.http.post(`${this.baseUrl}/login`, credentials, { 
       responseType: 'text',

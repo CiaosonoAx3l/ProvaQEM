@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { Register } from './components/register/register';
 import { Login } from './components/login/login';
 import { PostListComponent } from './components/post-list/post-list';
 import { PostCreate } from './components/post-create/post-create';
@@ -7,7 +8,7 @@ import { authGuard } from './guards/auth-guard';
 export const routes: Routes = [
   { path: '', redirectTo: '/posts', pathMatch: 'full' }, // Redirect iniziale alla bacheca
   { path: 'login', component: Login },
-  
+  { path: 'register', component: Register },
   // Rotte protette dall'AuthGuard
   { path: 'posts', component: PostListComponent, canActivate: [authGuard] },
   { path: 'create', component: PostCreate, canActivate: [authGuard] },  

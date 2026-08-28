@@ -85,34 +85,6 @@
   box-shadow: 0 0 0 3px rgba(55, 138, 221, 0.15);
 }
 
-.password-wrapper {
-  position: relative;
-}
-
-.password-wrapper input {
-  padding-right: 40px;
-}
-
-.toggle-password {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #999;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  padding: 2px;
-}
-
-.toggle-password:focus {
-  outline: 2px solid #378add;
-  border-radius: 4px;
-}
-
 .error-box {
   display: flex;
   align-items: center;

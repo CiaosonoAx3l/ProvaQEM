@@ -1,35 +1,52 @@
-<div class="create-container">
-  <header>
-    <h2>Crea un nuovo Post</h2>
-    <!-- Link per annullare e tornare indietro -->
-    <a routerLink="/posts" class="back-link">Torna alla bacheca</a>
+<div class="create-page">
+  <header class="create-header">
+    <h2>Nuovo post</h2>
+    <a routerLink="/posts" class="back-link">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+      Bacheca
+    </a>
   </header>
 
-  <div class="form-group">
-    <!-- La direttiva ngModel lega il testo alla variabile 'content' -->
-    <textarea
-      [(ngModel)]="content"
-      placeholder="A cosa stai pensando?"
-      rows="5"
-      [maxlength]="maxLength"
-    ></textarea>
-    
-    <!-- Contatore visibile -->
-    <div class="counter" [class.text-danger]="charsLeft <= 10">
-      {{ content.length }} / {{ maxLength }}
+  <div class="create-card">
+
+    <div *ngIf="errorMessage" class="error-box" role="alert">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="error-icon" aria-hidden="true">
+        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+        <line x1="12" x2="12" y1="9" y2="13"/>
+        <line x1="12" x2="12.01" y1="17" y2="17"/>
+      </svg>
+      {{ errorMessage }}
     </div>
-  </div>
 
-  <!-- Gestione feedback di errore -->
-  <div *ngIf="errorMessage" class="error-msg">
-    {{ errorMessage }}
-  </div>
+    <div class="form-group">
+      <label for="content">Contenuto</label>
+      <textarea
+        id="content"
+        name="content"
+        [(ngModel)]="content"
+        placeholder="A cosa stai pensando?"
+        rows="5"
+        [maxlength]="maxLength">
+      </textarea>
+      <div class="counter-row">
+        <span class="counter" [class.counter--warn]="charsLeft <= 10">
+          {{ content.length }} / {{ maxLength }}
+        </span>
+      </div>
+    </div>
 
-  <!-- Pulsante Pubblica: disabilitato se invalido o in fase di caricamento -->
-  <button 
-    (click)="submitPost()" 
-    [disabled]="isInvalid || isSubmitting" 
-    class="btn-primary">
-    {{ isSubmitting ? 'Pubblicazione in corso...' : 'Pubblica' }}
-  </button>
+    <button
+      (click)="submitPost()"
+      [disabled]="isInvalid || isSubmitting"
+      class="btn-submit">
+      <svg *ngIf="!isSubmitting" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="22" x2="11" y1="2" y2="13"/>
+        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+      </svg>
+      {{ isSubmitting ? 'Pubblicazione in corso…' : 'Pubblica' }}
+    </button>
+
+  </div>
 </div>
