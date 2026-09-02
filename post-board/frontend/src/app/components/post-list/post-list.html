@@ -37,7 +37,25 @@
           <!--<div class="avatar">{{ (post.authorUsername || '??') | slice:0:2 | uppercase }}</div>-->
           <span class="author-name">@{{ post.authorUsername }}</span>
         </div>
-        <span class="post-date">{{ post.createdAt }}</span>
+        
+        <!-- Wrapper aggiunto per allineare data e pulsante elimina -->
+        <div class="post-actions-right" style="display: flex; align-items: center; gap: 12px;">
+          <span class="post-date">{{ post.createdAt }}</span>
+          
+          <!-- Pulsante elimina con icona, visibile solo al proprietario del post -->
+          <button 
+            *ngIf="post.authorUsername === currentUser" 
+            (click)="deletePost(post.id)" 
+            class="btn-delete"
+            title="Elimina post"
+            style="background: none; border: none; color: #dc3545; cursor: pointer; padding: 4px; display: flex; align-items: center;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+          </button>
+        </div>
+
       </div>
       <hr class="post-divider">
       <p class="post-content">{{ post.content }}</p>

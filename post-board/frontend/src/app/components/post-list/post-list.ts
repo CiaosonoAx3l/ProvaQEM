@@ -4,6 +4,8 @@ import { Router, RouterModule } from '@angular/router';
 import { PostService } from '../../services/post';
 import { AuthService } from '../../services/auth';
 
+
+
 @Component({
   selector: 'app-post-list',
   standalone: true,
@@ -15,6 +17,8 @@ export class PostListComponent implements OnInit {
   posts: any[] = [];
   currentPage = 0;
   totalPages = 0;
+
+  currentUser: string | null = localStorage.getItem('currentUser');
 
   constructor(
     private postService: PostService,
@@ -50,6 +54,23 @@ export class PostListComponent implements OnInit {
         }
       }
     });
+  }
+
+  //eliminazione di un post
+  deletePost(postId: string) {
+    if (confirm('Sei sicuro di voler eliminare questo post?')) {
+      this.postService.deletePost(postId).subscribe({
+        next: () => {
+          // Rimuove il post dall'array locale senza dover ricaricare l'intera pagina dal server
+          this.posts = this.posts.filter(p => p.id !== postId);
+          this.cdr.detectChanges(); // aggiornamento 
+        },
+        error: (err) => {
+          console.error('Errore durante l\'eliminazione', err);
+          alert('Errore: impossibile eliminare il post.');
+        }
+      });
+    }
   }
 
   logout() {

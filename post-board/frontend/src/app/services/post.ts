@@ -31,4 +31,12 @@ export class PostService {
       withCredentials: true 
     });
   }
+
+  // Eliminazione di un post
+  deletePost(id: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${id}`, { 
+      responseType: 'text',
+      withCredentials: true 
+    });
+  }
 }

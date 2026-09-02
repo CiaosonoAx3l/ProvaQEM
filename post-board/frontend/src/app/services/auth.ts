@@ -33,6 +33,7 @@ export class AuthService {
     }).pipe(
       tap(() => {
         localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('currentUser', credentials.username);
         this.loggedIn.next(true);
       })
     );
@@ -45,6 +46,7 @@ export class AuthService {
     }).pipe(
       tap(() => {
         localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('currentUser');
         this.loggedIn.next(false);
       })
     );

@@ -12,6 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -70,5 +74,27 @@ public class PostController {
         postRepository.save(newPost);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Post pubblicato con successo");
+    }
+
+    // Endopoint per eliminare un post
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletePost(@PathVariable UUID id, Authentication authentication) {
+        Optional<Post> postOptional = postRepository.findById(id);
+
+        if (postOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post non trovato");
+        }
+
+        Post post = postOptional.get();
+        String currentUsername = authentication.getName();
+
+        // Controllo per vedere che l'utente sia il proprietario del post
+        if (!post.getAuthor().getUsername().equals(currentUsername)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Non sei autorizzato a eliminare questo post");
+        }
+
+        postRepository.delete(post);
+        return ResponseEntity.ok("Post eliminato con successo");
     }
 }
